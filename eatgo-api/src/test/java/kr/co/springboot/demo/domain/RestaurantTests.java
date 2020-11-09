@@ -11,7 +11,14 @@ public class RestaurantTests {
 
     @Test
     public void creation() {
-        Restaurant restaurant = new Restaurant(1004L, "Bob zip", "Seoul");
+//        Restaurant restaurant = new Restaurant(1004L, "Bob zip", "Seoul");
+
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
+
 
 
         Assert.assertThat(restaurant.getId(), Is.is(1004L));

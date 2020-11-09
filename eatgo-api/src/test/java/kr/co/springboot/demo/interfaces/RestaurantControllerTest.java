@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -45,7 +46,11 @@ public class RestaurantControllerTest {
     public void list() throws Exception {
 
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1004L, "Bob zip", "Seoul"));
+        restaurants.add(Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build());
         given(restaurantService.getRestaurants()).willReturn(restaurants);
 
         mvc.perform(get("/restaurants"))
@@ -57,8 +62,18 @@ public class RestaurantControllerTest {
     @Test
     public void detail() throws Exception {
 
-        Restaurant restaurant = new Restaurant(1004L, "Bob zip", "Seoul");
-        restaurant.addMenuItem(new MenuItem("Kimchi"));
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
+
+        MenuItem menuItem =MenuItem.builder()
+                .name("Kimchi")
+                .build();
+
+        restaurant.setMenuItems(Arrays.asList(menuItem));
+
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
@@ -72,8 +87,20 @@ public class RestaurantControllerTest {
 
     @Test
     public void create() throws Exception {
+        given(restaurantService.addRestaurant(any())).will(invocation -> {
+            Restaurant restaurant = invocation.getArgument(0);
+            return  Restaurant.builder()
+                    .id(1004L)
+                    .name("Bob zip")
+                    .address("Seoul")
+                    .build();
+        });
 
-        Restaurant restaurant = new Restaurant(1234L,"BeRyong","Seoul");
+        Restaurant restaurant = Restaurant.builder()
+                .id(1234L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
 
 
         mvc.perform(post("/restaurants")

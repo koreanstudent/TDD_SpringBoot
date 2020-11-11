@@ -86,13 +86,13 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    public void create() throws Exception {
+    public void createWithValidData() throws Exception {
         given(restaurantService.addRestaurant(any())).will(invocation -> {
             Restaurant restaurant = invocation.getArgument(0);
             return  Restaurant.builder()
                     .id(1004L)
-                    .name("Bob zip")
-                    .address("Seoul")
+                    .name(restaurant.getName())
+                    .address(restaurant.getAddress())
                     .build();
         });
 
@@ -111,6 +111,14 @@ public class RestaurantControllerTest {
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());
+    }
+
+    @Test
+    public void createWithInvalidData() throws Exception {
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Beryong\", \"address\":\"Busan\"}"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

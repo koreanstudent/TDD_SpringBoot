@@ -37,7 +37,6 @@ public class MenuItemServiceTest {
 
         menuItemService.bulkUpdate(1L, menuItems);
         
-        verify(menuItemRepsitory)
     }
 
 }

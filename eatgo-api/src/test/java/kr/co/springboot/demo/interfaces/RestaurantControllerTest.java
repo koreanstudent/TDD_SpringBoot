@@ -74,6 +74,12 @@ public class RestaurantControllerTest {
 
         restaurant.setMenuItems(Arrays.asList(menuItem));
 
+        Review review = Review.builder()
+                .name("JOKER")
+                .score(5)
+                .build();
+        restaurant.setReviews(Arrays.asList(review));
+
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))

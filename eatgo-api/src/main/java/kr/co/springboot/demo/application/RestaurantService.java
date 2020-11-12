@@ -1,9 +1,6 @@
 package kr.co.springboot.demo.application;
 
-import kr.co.springboot.demo.domain.MenuItem;
-import kr.co.springboot.demo.domain.MenuItemRepository;
-import kr.co.springboot.demo.domain.Restaurant;
-import kr.co.springboot.demo.domain.RestaurantRepository;
+import kr.co.springboot.demo.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +15,13 @@ public class RestaurantService {
     @Autowired
     MenuItemRepository menuItemRepository;
 
-    public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemRepository) {
+    @Autowired
+    ReviewReposiotey reviewReposiotey;
+
+    public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemRepository ,ReviewReposiotey reviewReposiotey) {
         this.restaurantRepository = restaurantRepository;
         this.menuItemRepository = menuItemRepository;
+        this.reviewReposiotey = reviewReposiotey;
     }
 
     public List<Restaurant> getRestaurants() {
@@ -33,6 +34,8 @@ public class RestaurantService {
 
         List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
         restaurant.setMenuItems(menuItems);
+
+        List<Review> review = reviewReposiotey.findAllByRestaurantId(id);
 
         return restaurant;
     }

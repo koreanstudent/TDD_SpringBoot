@@ -14,7 +14,9 @@ import java.util.Optional;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 
 public class RestaurantServiceTest {
@@ -27,6 +29,9 @@ public class RestaurantServiceTest {
     @Mock
     private MenuItemRepository menuItemRepository;
 
+    @Mock
+    private ReviewReposiotey reviewRepository;
+
 
     @Before
     public void setUp() {
@@ -36,7 +41,8 @@ public class RestaurantServiceTest {
 
         mockRestaurantRepository();
         mockMenuItemRepository();
-        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository);
+        mockReviwRepository();
+        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository, reviewRepository);
 
     }
 
@@ -68,6 +74,19 @@ public class RestaurantServiceTest {
 
     }
 
+
+    private void mockReviwRepository() {
+        List<Review> review = new ArrayList<>();
+        review.add(Review.builder()
+                .name("JOKER")
+                .score(3)
+                .description("mat-it-da")
+                .build());
+
+        given(reviewRepository.findAllByRestaurantId(1004L))
+                .willReturn(review);
+    }
+
     @Test
     public void getRestaurants() {
         List<Restaurant> restaurants = restaurantService.getRestaurants();
@@ -81,6 +100,10 @@ public class RestaurantServiceTest {
     @Test
     public void getRestaurant() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
+
+        verify(menuItemRepository).findAllByRestaurantId(eq(1004L));
+
+        verify(reviewRepository).findAllByRestaurantId(eq(1004L));
 
         assertThat(restaurant.getId(), is(1004L));
 

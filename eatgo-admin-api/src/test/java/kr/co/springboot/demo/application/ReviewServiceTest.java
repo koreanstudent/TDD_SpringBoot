@@ -2,13 +2,20 @@ package kr.co.springboot.demo.application;
 
 import kr.co.springboot.demo.domain.Review;
 import kr.co.springboot.demo.domain.ReviewReposiotey;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 public class ReviewServiceTest {
@@ -26,16 +33,20 @@ public class ReviewServiceTest {
     }
 
     @Test
-    public void addReview() {
-        Review review = Review.builder()
-                .name("JOKER")
-                .score(3)
-                .description("mat-it-da")
-                .build();
+    public void getReviews(){
+        List<Review> mockReviews = new ArrayList<>();
+        mockReviews.add(Review.builder().description("Cool!").build());
 
-        reviewService.addReview(10004L,review);
 
-        verify(reviewRepository).save(any());
+        given(reviewRepository.findAll()).willReturn(mockReviews);
+
+        List<Review> reviews = reviewService.getReviews();
+
+        Review review = reviews.get(0);
+
+        assertThat(review.getDescription(), is("Cool!"));
+
+
     }
 
 }

@@ -1,7 +1,7 @@
-package kr.co.springboot.demo.application;
+package ko.co.springbot.demo.application;
 
+import kr.co.springboot.demo.application.RestaurantService;
 import kr.co.springboot.demo.domain.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -26,6 +26,13 @@ public class RestaurantServiceTest {
     @Mock
     private RestaurantRepository restaurantRepository;
 
+    @Mock
+    private MenuItemRepository menuItemRepository;
+
+    @Mock
+    private ReviewReposiotey reviewRepository;
+
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -33,12 +40,20 @@ public class RestaurantServiceTest {
 //        menuItemRepository = new MenuItemRepositoryImpl();
 
         mockRestaurantRepository();
-
-        restaurantService = new RestaurantService(restaurantRepository);
+        mockMenuItemRepository();
+        mockReviwRepository();
+        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository, reviewRepository);
 
     }
 
+    private void mockMenuItemRepository() {
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(MenuItem.builder()
+            .name("Kimchi")
+            .build());
 
+        given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
+    }
 
     private void mockRestaurantRepository() {
         List<Restaurant> restaurants = new ArrayList<>();
@@ -60,6 +75,18 @@ public class RestaurantServiceTest {
     }
 
 
+    private void mockReviwRepository() {
+        List<Review> review = new ArrayList<>();
+        review.add(Review.builder()
+                .name("JOKER")
+                .score(3)
+                .description("mat-it-da")
+                .build());
+
+        given(reviewRepository.findAllByRestaurantId(1004L))
+                .willReturn(review);
+    }
+
     @Test
     public void getRestaurants() {
         List<Restaurant> restaurants = restaurantService.getRestaurants();
@@ -71,10 +98,20 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void getRestaurantWithExisted() {
+    public void getRestaurant() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
 
+        verify(menuItemRepository).findAllByRestaurantId(eq(1004L));
+
+        verify(reviewRepository).findAllByRestaurantId(eq(1004L));
+
         assertThat(restaurant.getId(), is(1004L));
+
+        MenuItem menuItem =restaurant.getMenuItems().get(0);
+
+        assertThat(menuItem.getName(),is("Kimchi"));
+
+
     }
 
     @Test

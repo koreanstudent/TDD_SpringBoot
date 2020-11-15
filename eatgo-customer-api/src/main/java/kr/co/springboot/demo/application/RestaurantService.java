@@ -12,9 +12,16 @@ public class RestaurantService {
     @Autowired
     RestaurantRepository restaurantRepository;
 
+    @Autowired
+    MenuItemRepository menuItemRepository;
 
-    public RestaurantService(RestaurantRepository restaurantRepository) {
+    @Autowired
+    ReviewReposiotey reviewReposiotey;
+
+    public RestaurantService(RestaurantRepository restaurantRepository, MenuItemRepository menuItemRepository ,ReviewReposiotey reviewReposiotey) {
         this.restaurantRepository = restaurantRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.reviewReposiotey = reviewReposiotey;
     }
 
     public List<Restaurant> getRestaurants() {
@@ -24,6 +31,11 @@ public class RestaurantService {
     }
     public Restaurant getRestaurant(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+
+        List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
+        restaurant.setMenuItems(menuItems);
+
+        List<Review> review = reviewReposiotey.findAllByRestaurantId(id);
 
         return restaurant;
     }

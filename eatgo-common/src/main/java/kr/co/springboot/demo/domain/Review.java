@@ -23,6 +23,7 @@ public class Review {
 
     private Integer score;
 
+    @Getter
     private String description;
 
 

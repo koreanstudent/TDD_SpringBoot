@@ -1,7 +1,8 @@
-package kr.co.springboot.demo.interfaces;
+package ko.co.springbot.demo.interfaces;
 
 import kr.co.springboot.demo.application.ReviewService;
 import kr.co.springboot.demo.domain.Review;
+import kr.co.springboot.demo.interfaces.ReviewController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -35,17 +29,34 @@ public class ReviewControllerTest {
     @MockBean
     private ReviewService reviewService;
 
-   @Test
-    public void list() throws Exception {
+    @Test
+    public void createIn() throws Exception {
 
-       List<Review> reviews = new ArrayList<>();
-       reviews.add(Review.builder().description("Cool!").build());
+        given(reviewService.addReview(eq(1L),any())).willReturn(
+                Review.builder()
+                        .id(123L)
+                        .name("JOKER")
+                        .score(3)
+                        .description("mat-it-da")
+                        .build()
+        );
 
-       given(reviewService.getReviews()).willReturn(reviews);
+        mvc.perform(post("/restaurants/1/reviews")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"JOKER\",\"score\":\"3\",\"description\":\"mat-it-da\"}"))
+                .andExpect(status().isCreated());
 
-       mvc.perform(get("/reviews"))
-               .andExpect(status().isOk())
-               .andExpect(content().string(containsString("Cool!")));
-   }
+        verify(reviewService).addReview(eq(1L),any());
+    }
+
+    @Test
+    public void createInvalid() throws Exception {
+        mvc.perform(post("/restaurants/1/reviews")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{}"))
+                .andExpect(status().isBadRequest());
+
+        verify(reviewService, never()).addReview(eq(1L),any());
+    }
 
 }

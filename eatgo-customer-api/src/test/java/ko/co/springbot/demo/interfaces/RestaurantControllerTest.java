@@ -1,13 +1,15 @@
-package kr.co.springboot.demo.interfaces;
+package ko.co.springbot.demo.interfaces;
 
 import kr.co.springboot.demo.application.RestaurantService;
-import kr.co.springboot.demo.domain.*;
+import kr.co.springboot.demo.domain.MenuItem;
+import kr.co.springboot.demo.domain.Restaurant;
+import kr.co.springboot.demo.domain.Review;
+import kr.co.springboot.demo.interfaces.RestaurantController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -68,14 +70,25 @@ public class RestaurantControllerTest {
                 .address("Seoul")
                 .build();
 
+        MenuItem menuItem =MenuItem.builder()
+                .name("Kimchi")
+                .build();
 
+        restaurant.setMenuItems(Arrays.asList(menuItem));
+
+        Review review = Review.builder()
+                .name("JOKER")
+                .score(5)
+                .build();
+        restaurant.setReviews(Arrays.asList(review));
 
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"id\":1004")))
-                .andExpect(content().string(containsString("\"name\":\"Bob zip\"")));
+                .andExpect(content().string(containsString("\"name\":\"Bob zip\"")))
+                .andExpect(content().string(containsString("Kimchi")));
 
 
     }
@@ -102,19 +115,19 @@ public class RestaurantControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"Beryong\", \"address\":\"Busan\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location","/restaurants/1004"))
+                .andExpect(header().string("location","/restaurants/1234"))
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());
     }
 
-//    @Test
-//    public void createWithInvalidData() throws Exception {
-//        mvc.perform(post("/restaurants")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"name\":\"Beryong\", \"address\":\"Busan\"}"))
-//                .andExpect(status().isBadRequest());
-//    }
+    @Test
+    public void createWithInvalidData() throws Exception {
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Beryong\", \"address\":\"Busan\"}"))
+                .andExpect(status().isBadRequest());
+    }
 
     @Test
     public void update() throws Exception {

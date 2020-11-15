@@ -1,4 +1,4 @@
-package ko.co.springbot.demo.application;
+package kr.co.springboot.demo.application;
 
 import kr.co.springboot.demo.application.RestaurantService;
 import kr.co.springboot.demo.domain.*;

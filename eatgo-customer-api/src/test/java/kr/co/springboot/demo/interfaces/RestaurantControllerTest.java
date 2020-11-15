@@ -1,4 +1,4 @@
-package ko.co.springbot.demo.interfaces;
+package kr.co.springboot.demo.interfaces;
 
 import kr.co.springboot.demo.application.RestaurantService;
 import kr.co.springboot.demo.domain.MenuItem;
@@ -129,12 +129,5 @@ public class RestaurantControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
-    public void update() throws Exception {
-        mvc.perform(patch("/restaurants/1004")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Beryong\", \"address\":\"Busan\"}"))
-                .andExpect(status().isOk());
 
-    }
 }

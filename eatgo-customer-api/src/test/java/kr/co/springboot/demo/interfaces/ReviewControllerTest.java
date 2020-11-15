@@ -1,4 +1,4 @@
-package ko.co.springbot.demo.interfaces;
+package kr.co.springboot.demo.interfaces;
 
 import kr.co.springboot.demo.application.ReviewService;
 import kr.co.springboot.demo.domain.Review;

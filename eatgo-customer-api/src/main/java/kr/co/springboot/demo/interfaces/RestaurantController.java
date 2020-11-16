@@ -3,11 +3,8 @@ package kr.co.springboot.demo.interfaces;
 import kr.co.springboot.demo.application.RestaurantService;
 import kr.co.springboot.demo.domain.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @CrossOrigin
@@ -20,8 +17,8 @@ public class RestaurantController {
 
 
     @GetMapping("/restaurants")
-    public List<Restaurant> list() {
-        List<Restaurant> restaurants = restaurantService.getRestaurants();
+    public List<Restaurant> list(@RequestParam("region") String region) {
+        List<Restaurant> restaurants = restaurantService.getRestaurants(region);
 
         return restaurants;
     }

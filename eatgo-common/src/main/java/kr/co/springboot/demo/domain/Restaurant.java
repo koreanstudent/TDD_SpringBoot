@@ -23,6 +23,8 @@ public class Restaurant {
     @GeneratedValue
     private Long id;
 
+    private Long categoryId;
+
     private String name;
     private String address;
 

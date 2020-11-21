@@ -40,4 +40,9 @@ public class UserService {
                 .build();
         return userRepository.save(user);
     }
+
+    public User authenticate(String email, String password) {
+
+        return null;
+    }
 }

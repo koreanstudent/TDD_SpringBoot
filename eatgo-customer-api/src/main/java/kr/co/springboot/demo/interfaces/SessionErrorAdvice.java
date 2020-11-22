@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class SessionErrorAdvice {
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(EmailNotExistedException.class)
     public String handleEmailNotExisted() {
         return "{}";
     }
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PasswordWrongException.class)
     public String handlePasswordWrong() {
         return "{}";

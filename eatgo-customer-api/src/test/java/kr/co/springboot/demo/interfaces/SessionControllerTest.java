@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 @RunWith(SpringRunner.class)
 @WebMvcTest(SessionController.class)
 public class SessionControllerTest {
@@ -67,8 +68,6 @@ public class SessionControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(userService).authenticate(eq("test@naver.com"), eq("x"));
-
-
     }
 
 

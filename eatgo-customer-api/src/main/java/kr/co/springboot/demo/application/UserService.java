@@ -16,9 +16,12 @@ public class UserService {
 
     UserRepository userRepository;
 
+    PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User registerUser(String email, String name, String password) {
@@ -29,7 +32,6 @@ public class UserService {
         }
 
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
 
         User user =User.builder()
@@ -42,7 +44,13 @@ public class UserService {
     }
 
     public User authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EmailNotExistedException(email));
 
-        return null;
+
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw new PasswordWrongException();
+        }
+
+        return user;
     }
 }

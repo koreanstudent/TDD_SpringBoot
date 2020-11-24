@@ -8,6 +8,8 @@ spring:
     hibernate:
      ddl-auto: update
 
+jwt:
+  secret:123451234124124124124124124
 
 ---
 

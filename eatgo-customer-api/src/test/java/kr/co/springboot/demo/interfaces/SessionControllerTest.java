@@ -4,6 +4,7 @@ import kr.co.springboot.demo.application.EmailNotExistedException;
 import kr.co.springboot.demo.application.PasswordWrongException;
 import kr.co.springboot.demo.application.UserService;
 import kr.co.springboot.demo.domain.User;
+import kr.co.springboot.demo.utils.JwtUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 
 import static org.mockito.BDDMockito.given;
@@ -28,22 +30,30 @@ public class SessionControllerTest {
 
     @Autowired
     MockMvc mvc;
+
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
     public void create() throws Exception {
 
-        User mockUser = User.builder().password("ACCESSTOKEN").build();
+        Long id =1004L;
+        String name ="test";
+        User mockUser = User.builder().id(id).name(name).build();
 
         given(userService.authenticate("test@naver.com","test")).willReturn(mockUser);
+
+        given(jwtUtil.createToken(id,name)).willReturn("header.payload.signature");
 
         mvc.perform(post("/session")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"test@naver.com\", \"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location","/session"))
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
+                .andExpect(content().string(containsString("{\"accessToken\":\"header.payload.signature\"")));
 
         verify(userService).authenticate(eq("test@naver.com"), eq("test"));
 

@@ -3,6 +3,7 @@ package kr.co.springboot.demo.interfaces;
 import kr.co.springboot.demo.application.EmailNotExistedException;
 import kr.co.springboot.demo.application.PasswordWrongException;
 import kr.co.springboot.demo.application.UserService;
+import kr.co.springboot.demo.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,17 @@ public class SessionControllerTest {
 
     @Test
     public void create() throws Exception {
+
+        User mockUser = User.builder().password("ACCESSTOKEN").build();
+
+        given(userService.authenticate("test@naver.com","test")).willReturn(mockUser);
+
         mvc.perform(post("/session")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"test@naver.com\", \"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location","/session"))
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKEN\"}"));
+                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
 
         verify(userService).authenticate(eq("test@naver.com"), eq("test"));
 

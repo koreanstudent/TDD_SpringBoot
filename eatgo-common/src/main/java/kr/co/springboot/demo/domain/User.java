@@ -1,5 +1,6 @@
 package kr.co.springboot.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,5 +38,10 @@ public class User {
     }
     public void deativate(){
         level = 0L;
+    }
+
+    @JsonIgnore
+    public String getAccessToken() {
+        return password.substring(0, 10);
     }
 }

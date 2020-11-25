@@ -1,7 +1,7 @@
 package kr.co.springboot.demo.application;
 
 import kr.co.springboot.demo.domain.Review;
-import kr.co.springboot.demo.domain.ReviewReposiotey;
+import kr.co.springboot.demo.domain.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public class ReviewService {
 
-    private ReviewReposiotey reviewReposiotey;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    public ReviewService(ReviewReposiotey reviewReposiotey){
-        this.reviewReposiotey = reviewReposiotey;
+    public ReviewService(ReviewRepository reviewRepository){
+        this.reviewRepository = reviewRepository;
     }
 
     public List<Review> getReviews() {
-        return reviewReposiotey.findAll();
+        return reviewRepository.findAll();
     }
 }

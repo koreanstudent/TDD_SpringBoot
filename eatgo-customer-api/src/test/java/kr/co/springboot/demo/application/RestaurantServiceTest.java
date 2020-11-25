@@ -29,7 +29,7 @@ public class RestaurantServiceTest {
     private MenuItemRepository menuItemRepository;
 
     @Mock
-    private ReviewReposiotey reviewRepository;
+    private ReviewRepository reviewRepository;
 
 
     @Before

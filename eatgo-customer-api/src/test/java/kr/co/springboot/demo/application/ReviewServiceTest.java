@@ -1,8 +1,7 @@
 package kr.co.springboot.demo.application;
 
-import kr.co.springboot.demo.application.ReviewService;
 import kr.co.springboot.demo.domain.Review;
-import kr.co.springboot.demo.domain.ReviewReposiotey;
+import kr.co.springboot.demo.domain.ReviewRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,7 +15,7 @@ public class ReviewServiceTest {
     private ReviewService reviewService;
 
     @Mock
-    private ReviewReposiotey reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Before
     public void setUp() {

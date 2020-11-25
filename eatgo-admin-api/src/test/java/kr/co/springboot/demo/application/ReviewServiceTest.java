@@ -1,8 +1,7 @@
 package kr.co.springboot.demo.application;
 
 import kr.co.springboot.demo.domain.Review;
-import kr.co.springboot.demo.domain.ReviewReposiotey;
-import org.hamcrest.core.Is;
+import kr.co.springboot.demo.domain.ReviewRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -23,7 +21,7 @@ public class ReviewServiceTest {
     private ReviewService reviewService;
 
     @Mock
-    private ReviewReposiotey reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Before
     public void setUp() {

@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/demo
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+     ddl-auto: update
+
+jwt:
+  secret: 12345678901234567890123456789012
+
+---
+
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:test

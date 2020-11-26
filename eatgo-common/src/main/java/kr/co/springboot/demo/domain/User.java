@@ -29,6 +29,8 @@ public class User {
 
     private Long level;
 
+    private Long restaurantId;
+
     public boolean isAdmin() {
         return level >=100;
     }
@@ -36,8 +38,17 @@ public class User {
     public boolean isActive() {
         return level > 0;
     }
+
     public void deativate(){
         level = 0L;
+    }
+
+    public void setRestaurantId(Long restaurantId){
+        level = 50L;
+        this.restaurantId = restaurantId;
+    }
+    public boolean isRestaurantOwner() {
+        return level == 50L;
     }
 
 }

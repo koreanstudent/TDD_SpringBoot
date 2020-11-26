@@ -32,7 +32,7 @@ public class ReviewServiceTest {
                 .description("mat-it-da")
                 .build();
 
-        reviewService.addReview(10004L,review);
+        reviewService.addReview(10004L,"JOKER", 3, "mat-it-da");
 
         verify(reviewRepository).save(any());
     }

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JwtUtilTest {
 
-    private static final String SECRET ="012345678901234567890123456789012";
+    private static final String SECRET ="12345678901234567890123456789012";
 
     private JwtUtil jwtUtil;
 
@@ -25,12 +25,12 @@ public class JwtUtilTest {
 
         String token = jwtUtil.createToken(1004L, "John");
 
-        assertThat(token, containsString("."));
+        assertThat(token, containsString("..."));
     }
 
     @Test
     public void getClaims() {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.SaTSZjReMkkVbBrtgM6QtIDiZ-MixzbhxnvTMV0BzBY";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
         Claims claims = jwtUtil.getClaims(token);
 
         assertThat(claims.get("userId", Long.class),is("John"));

@@ -8,12 +8,12 @@ import javax.persistence.Id;
 
 @Entity
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Review {
     @Id
     @GeneratedValue
-    @Getter
     private Long id;
 
     @Setter
